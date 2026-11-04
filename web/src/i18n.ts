@@ -1,6 +1,7 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import { selfSignedMessages } from "./features/self-signed-client/messages";
+import { ru } from "./locales/ru";
 
 const en: Record<string, string> = {
   ...selfSignedMessages.en,
@@ -1799,9 +1800,9 @@ const zhCN: Record<string, string> = {
   confirmDisconnectDescription: "服务端会在该 RustDesk 客户端下次心跳时请求关闭连接 {{connId}}。",
 };
 
-// Only `en` and `zh-CN` ship with the console, so anything else has to fall
+// Only `en`, `ru` and `zh-CN` ship with the console, so anything else has to fall
 // back. Defaulting to Chinese meant every browser whose locale is neither of
-// the two (i.e. most of them) got a Chinese UI and no way to change it other
+// the three got a Chinese UI and no way to change it other
 // than setting `localStorage.lang` by hand from the devtools console.
 function detectLang(): string {
   const stored = localStorage.getItem("lang");
@@ -1811,6 +1812,7 @@ function detectLang(): string {
     : [navigator.language].filter(Boolean);
   for (const tag of preferred) {
     if (/^zh\b/i.test(tag)) return "zh-CN";
+    if (/^ru\b/i.test(tag)) return "ru";
     if (/^en\b/i.test(tag)) return "en";
   }
   return "en";
@@ -1823,6 +1825,7 @@ i18n.on("languageChanged", (language) => {
 void i18n.use(initReactI18next).init({
   resources: {
     en: { translation: en },
+    ru: { translation: ru },
     "zh-CN": { translation: zhCN },
   },
   lng: detectLang(),
